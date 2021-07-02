@@ -56,4 +56,64 @@ case 'antifake':
 
 					}
 
-                break
+                if (!welkom.includes(anu.jid)) return
+
+      try {
+
+         const mdata = await client.groupMetadata(anu.jid)
+
+         num = anu.participants[0]
+
+         console.log(anu)
+
+         ini_user = client.contacts[num]
+
+         namaewa = ini_user.notify
+
+         member = mdata.participants.length
+
+         try {
+
+               var ppimg = await client.getProfilePicture(`${num.split('@')[0]}@c.us`)
+
+            } catch {
+
+               var ppimg = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
+
+            }
+
+        try {
+
+               var ppgc = await client.getProfilePicture(anu.jid)
+
+            } catch {
+
+               var ppgc = 'https://i0.wp.com/www.gambarunik.id/wp-content/uploads/2019/06/Top-Gambar-Foto-Profil-Kosong-Lucu-Tergokil-.jpg'
+
+            }
+
+        shortpc = await axios.get(`https://tinyurl.com/api-create.php?url=${ppimg}`)
+
+        shortgc = await axios.get(`https://tinyurl.com/api-create.php?url=${ppgc}`)
+
+         if (anu.action == 'add') {
+
+         welcome = await getBuffer(`http://brizas-api.herokuapp.com/photomod/welcome?apikey=brizaloka&desc=2020&background=https://i.imgur.com/tVKFNFk.png&profileimg=${shortpc.data}&groupimg=${shortgc.data}&number=20&groupname=${encodeURIComponent(mdata.subject)}&name=${num.split('@')[0]}`)
+
+        client.sendMessage(mdata.id, welcome, MessageType.image, {contextInfo: {'mentionedid': [num]}})
+
+        } else if (anu.action == 'remove') {
+
+       welcomedois = await getBuffer(`http://brizas-api.herokuapp.com/photomod/v1/menu?apikey=brizaloka&profileimg=${shortpc.data}&background=https://i.imgur.com/tVKFNFk.png&description=volte nunca mais&title=ADEUS KKK&username=${num.split('@')[0]}`)
+
+       client.sendMessage(mdata.id, welcomedois, MessageType.image, {contextInfo: {'mentionedid': [num]}})
+
+}
+
+     } catch (e) {
+
+         console.log('Error : %s', color(e, 'red'))
+
+      }
+
+})
